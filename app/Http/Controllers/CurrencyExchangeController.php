@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CurrencyExchangeService;
 use Illuminate\Http\Request;
 
 class CurrencyExchangeController extends Controller
 {
     public function exchangeCurrency(Request $request): \Illuminate\Http\JsonResponse
     {
-        return response()->json(['msg' => "success", "amount"=>"170,496.53"]);
+        $currencyExchangeService = new CurrencyExchangeService();
+        $result = $currencyExchangeService->currencyExchange($request->source, $request->target, $request->amount);
+        return response()->json(['msg' => "success", "amount"=>$result]);
     }
 }
