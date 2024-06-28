@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class CurrencyExchangeTest extends TestCase
 {
     /**
-     * @dataProvider currencyExchangeShouldReturnExchangedValueProvider
+     *
      */
     public function testCurrencyExchangeShouldReturnExchangedValue($source, $target, $amount, $expected): void
     {
