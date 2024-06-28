@@ -8,10 +8,13 @@ use Illuminate\Http\Request;
 
 class CurrencyExchangeController extends Controller
 {
+    public function __construct(private CurrencyExchangeService $currencyExchangeService)
+    {
+    }
+
     public function exchangeCurrency(ExchangeCurrencyRequest $request): \Illuminate\Http\JsonResponse
     {
-        $currencyExchangeService = new CurrencyExchangeService();
-        $result = $currencyExchangeService->currencyExchange($request->source, $request->target, $request->amount);
+        $result = $this->currencyExchangeService->currencyExchange($request->source, $request->target, $request->amount);
 
         return response()->json(['msg' => "success", "amount"=>$result]);
     }
