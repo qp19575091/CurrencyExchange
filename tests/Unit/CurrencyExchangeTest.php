@@ -14,7 +14,7 @@ class CurrencyExchangeTest extends TestCase
     {
         $currencyExchangeService = new CurrencyExchangeService();
         $this->assertEquals(
-            ['msg' => "success", "amount" => "170,496.53"],
+             "170,496.53",
             $currencyExchangeService->currencyExchange("USD", "JPY", "1,525")
         );
     }

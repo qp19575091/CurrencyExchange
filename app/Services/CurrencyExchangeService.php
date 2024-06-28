@@ -36,6 +36,6 @@ class CurrencyExchangeService
             $result = $exchangeMap[$source][$target] * $amount;
         }
 
-        return ['msg' => "success", "amount" => number_format($result, 2)];
+        return number_format($result, 2);
     }
 }
