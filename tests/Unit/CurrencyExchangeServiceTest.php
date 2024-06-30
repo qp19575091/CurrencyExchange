@@ -34,7 +34,7 @@ class CurrencyExchangeServiceTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $currencyExchange = new CurrencyExchangeService($this->rate);
-        $currencyExchange->currencyExchange($source,$target,$amount);
+        $currencyExchange->convert($source,$target,$amount);
     }
 
     public static function invalidCurrencyTypeShouldThrowExceptionProvider(): array
@@ -54,7 +54,7 @@ class CurrencyExchangeServiceTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $currencyExchange = new CurrencyExchangeService($this->rate);
-        $currencyExchange->currencyExchange($source,$target,$amount);
+        $currencyExchange->convert($source,$target,$amount);
     }
 
     public static function invalidAmountShouldThrowExceptionProvider(): array

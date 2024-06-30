@@ -19,7 +19,7 @@ class CurrencyExchangeService
      * @return string
      * @throws Exception
      */
-    public function currencyExchange(string $source, string $target, string $amount): string
+    public function convert(string $source, string $target, string $amount): string
     {
         $amount = new Amount(amount: $amount);
         $amount = $amount->toFloat();

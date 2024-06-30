@@ -25,8 +25,8 @@ class ExchangeCurrencyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "source" => ["required", Rule::enum(Currency::class)],
-            "target" => ["required", Rule::enum(Currency::class)],
+            "source" => ["required"],
+            "target" => ["required"],
             "amount" => ["required", new AmountRule()],
         ];
     }

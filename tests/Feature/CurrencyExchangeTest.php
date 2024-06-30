@@ -50,8 +50,9 @@ class CurrencyExchangeTest extends TestCase
     public static function invalidRequestParamsShouldThrowExceptionProvider(): array
     {
         return [
-            "source is integer" => [123, "JPY", "1,525"],
-            "target is integer" => ["USD", 123, "1,525"],
+            "source is not present" => [null, "JPY", "1,525"],
+            "target is not present" => ["USD", null, "1,525"],
+            "amount is not present" => ["USD", 123, null],
             "amount has alphabet" => ["USD", "USD", "1,525a"],
             "amount has Special characters" => ["JPY", "JPY", "1,525@"],
             "amount is not currency format" => ["JPY", "TWD", "1,52,5"],

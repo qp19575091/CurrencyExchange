@@ -17,7 +17,7 @@ class CurrencyExchangeController extends Controller
      */
     public function exchangeCurrency(ExchangeCurrencyRequest $request): \Illuminate\Http\JsonResponse
     {
-        $result = $this->currencyExchangeService->currencyExchange(
+        $result = $this->currencyExchangeService->convert(
             source: $request->source,
             target: $request->target,
             amount: $request->amount
