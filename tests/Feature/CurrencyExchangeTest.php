@@ -59,9 +59,11 @@ class CurrencyExchangeTest extends TestCase
     }
 
     /**
-     * source、target 為字串，amount 輸入時無論有無千分位 皆可接受
+     * 需驗證使用者輸入的值。source、target 為字串,amount 輸入時無論有無千分位
+     * 皆可接受。例如「1,525」或「1525」皆可。
+     *
      * @dataProvider validRequestParamsShouldThrowExceptionProvider
-     * php artisan test  --filter CurrencyExchangeTest::testInvalidRequestParamsShouldThrowException
+     * php artisan test  --filter CurrencyExchangeTest::testValidRequestParamsShouldThrowException
      */
     public function testValidRequestParamsShouldThrowException($source, $target, $amount)
     {
