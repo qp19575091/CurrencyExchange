@@ -66,7 +66,7 @@ class CurrencyExchangeTest extends TestCase
      * @dataProvider validRequestParams
      * php artisan test  --filter CurrencyExchangeTest::testValidRequestParams
      */
-    public function testValidRequestParams($source, $target, $amount)
+    public function testValidRequestParams(string $source, string $target, string $amount)
     {
         $response = $this->getJson("/api/currencyExchange?source=$source&target=$target&amount=$amount");
         $response->assertStatus(Response::HTTP_OK);

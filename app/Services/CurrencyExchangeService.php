@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\InvalidValueException;
 use App\ValueObjects\Amount;
 use Exception;
 
@@ -25,7 +26,7 @@ class CurrencyExchangeService
         $amount = $amount->toFloat();
 
         if (is_null($amount)) {
-            throw new \Exception("amount not support");
+            throw new InvalidValueException("amount not support");
         }
         $rate = $this->getRate(source: $source, target: $target);
 
@@ -44,11 +45,11 @@ class CurrencyExchangeService
         $target = strtoupper($target);
 
         if (!array_key_exists($source, $this->rate)) {
-            throw new Exception("currency not support");
+            throw new InvalidValueException("currency not support");
         }
 
         if (!array_key_exists($target, $this->rate[$source])) {
-            throw new Exception("currency not support");
+            throw new InvalidValueException("currency not support");
         }
 
         return $this->rate[$source][$target];

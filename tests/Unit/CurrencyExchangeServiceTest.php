@@ -2,19 +2,21 @@
 
 namespace Tests\Unit;
 
+use App\Exceptions\InvalidValueException;
 use App\Services\CurrencyExchangeService;
 use Tests\TestCase;
 
 class CurrencyExchangeServiceTest extends TestCase
 {
     /**
+     * 若輸入的 source 或 target 系統並不提供時的案例
      * php artisan test --filter CurrencyExchangeServiceTest::testInvalidCurrencyTypeShouldThrowException
      * @dataProvider invalidCurrencyTypeShouldThrowExceptionProvider
      * @return void
      */
     public function testInvalidCurrencyTypeShouldThrowException($source, $target, $amount)
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(InvalidValueException::class);
         $currencyExchange = new CurrencyExchangeService(config('currency.rate'));
         $currencyExchange->convert($source,$target,$amount);
     }
@@ -28,13 +30,14 @@ class CurrencyExchangeServiceTest extends TestCase
     }
 
     /**
+     * 若輸入的金額為非數字或無法辨認時的案例
      * php artisan test --filter CurrencyExchangeServiceTest::testInvalidAmountShouldThrowException
      * @dataProvider invalidAmountShouldThrowExceptionProvider
      * @return void
      */
-    public function testInvalidAmountShouldThrowException($source, $target, $amount)
+    public function testInvalidAmountShouldThrowException(string $source, string $target, string $amount)
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(InvalidValueException::class);
         $currencyExchange = new CurrencyExchangeService(config('currency.rate'));
         $currencyExchange->convert($source,$target,$amount);
     }
@@ -49,6 +52,7 @@ class CurrencyExchangeServiceTest extends TestCase
     }
 
     /**
+     * 輸入的數字需四捨五入到小數點第二位，並請提供覆蓋有小數與沒有 小數的多種案例
      * php artisan test --filter CurrencyExchangeServiceTest::testAmountWithFloatShouldBeConverted
      * @dataProvider amountWithFloatShouldBeConvertedProvider
      * @return void
@@ -65,6 +69,7 @@ class CurrencyExchangeServiceTest extends TestCase
         return [
             "amount 1,525.99 exchange from 'usd' To 'jpy' Should return 170,607.21" => ["USD", "JPY", "1,525.99", "170,607.21"],
             "amount 1,525.32 exchange from 'usd' To 'jpy' Should return 170,532.30" => ["USD", "JPY", "1,525.32", "170,532.30"],
+            "amount 1,525 exchange from 'usd' To 'jpy' Should return 170,532.30" => ["USD", "JPY", "1,525", "170,496.53"],
         ];
     }
 }
