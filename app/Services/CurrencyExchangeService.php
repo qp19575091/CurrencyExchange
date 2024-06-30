@@ -29,7 +29,7 @@ class CurrencyExchangeService
         }
         $rate = $this->getRate(source: $source, target: $target);
 
-        return number_format($rate * $amount, 2);
+        return number_format($rate * round($amount, 2), 2);
     }
 
     /**
