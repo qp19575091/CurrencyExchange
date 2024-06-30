@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\Currency;
-use App\Rules\CurrencyRule;
+use App\Rules\AmountRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,7 +27,7 @@ class ExchangeCurrencyRequest extends FormRequest
         return [
             "source" => ["required", Rule::enum(Currency::class)],
             "target" => ["required", Rule::enum(Currency::class)],
-            "amount" => ["required", new CurrencyRule()],
+            "amount" => ["required", new AmountRule()],
         ];
     }
 }

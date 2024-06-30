@@ -2,10 +2,11 @@
 
 namespace App\Rules;
 
+use App\ValueObjects\Amount;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class CurrencyRule implements ValidationRule
+class AmountRule implements ValidationRule
 {
     /**
      * Run the validation rule.
@@ -14,12 +15,11 @@ class CurrencyRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $pattern = '/^\d{1,3}(,\d{3})*(\.\d{2})?$/';
+        $amount = new Amount(amount: $value);
 
-        if (!is_numeric($value)){
-           if (!preg_match($pattern, $value)) {
-               $fail("value not allow");
-           }
+        if (is_null($amount->toFloat()))
+        {
+            $fail("value not allow");
         }
     }
 }

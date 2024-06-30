@@ -22,9 +22,14 @@ class CurrencyExchangeService
     public function currencyExchange(string $source, string $target, string $amount): string
     {
         $amount = new Amount(amount: $amount);
+        $amount = $amount->toFloat();
+
+        if (is_null($amount)) {
+            throw new \Exception("amount not support");
+        }
         $rate = $this->getRate(source: $source, target: $target);
 
-        return number_format($rate * $amount->toFloat(), 2);
+        return number_format($rate * $amount, 2);
     }
 
     /**
