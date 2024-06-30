@@ -12,10 +12,17 @@ class CurrencyExchangeController extends Controller
     {
     }
 
+    /**
+     * @throws \Exception
+     */
     public function exchangeCurrency(ExchangeCurrencyRequest $request): \Illuminate\Http\JsonResponse
     {
-        $result = $this->currencyExchangeService->currencyExchange($request->source, $request->target, $request->amount);
+        $result = $this->currencyExchangeService->currencyExchange(
+            source: $request->source,
+            target: $request->target,
+            amount: $request->amount
+        );
 
-        return response()->json(['msg' => "success", "amount"=>$result]);
+        return response()->json(['msg' => "success", "amount" => $result]);
     }
 }

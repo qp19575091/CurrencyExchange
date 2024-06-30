@@ -62,16 +62,16 @@ class CurrencyExchangeTest extends TestCase
      * 需驗證使用者輸入的值。source、target 為字串,amount 輸入時無論有無千分位
      * 皆可接受。例如「1,525」或「1525」皆可。
      *
-     * @dataProvider validRequestParamsShouldThrowExceptionProvider
-     * php artisan test  --filter CurrencyExchangeTest::testValidRequestParamsShouldThrowException
+     * @dataProvider validRequestParams
+     * php artisan test  --filter CurrencyExchangeTest::testValidRequestParams
      */
-    public function testValidRequestParamsShouldThrowException($source, $target, $amount)
+    public function testValidRequestParams($source, $target, $amount)
     {
         $response = $this->getJson("/api/currencyExchange?source=$source&target=$target&amount=$amount");
         $response->assertStatus(Response::HTTP_OK);
     }
 
-    public static function validRequestParamsShouldThrowExceptionProvider(): array
+    public static function validRequestParams(): array
     {
         return [
             "amount with thousand is valid " => ["JPY", "JPY", "1,525"],

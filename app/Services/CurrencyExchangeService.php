@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\ValueObjects\Amount;
+use Exception;
+
 class CurrencyExchangeService
 {
     public function __construct(readonly private array $rate)
@@ -10,53 +13,39 @@ class CurrencyExchangeService
     }
 
     /**
-     * @throws \Exception
+     * @param string $source
+     * @param string $target
+     * @param string $amount
+     * @return string
+     * @throws Exception
      */
-    public function currencyExchange(string $source, string $target, string $amount)
+    public function currencyExchange(string $source, string $target, string $amount): string
     {
-        $source = strtoupper($source);
-        $target = strtoupper($target);
+        $amount = new Amount(amount: $amount);
+        $rate = $this->getRate(source: $source, target: $target);
 
-        $this->validateCurrencySupport($source,$this->rate);
-        $this->validateCurrencySupport($target,$this->rate[$source]);
-
-
-        $this->validateAmountSupport($amount);
-
-        if (is_numeric($amount)) {
-            $result = $this->rate[$source][$target] * $amount;
-        } else {
-            $amount = (int) str_replace(",", '', $amount);
-            $result = $this->rate[$source][$target] * $amount;
-        }
-
-        return number_format($result, 2);
+        return number_format($rate * $amount->toFloat(), 2);
     }
 
     /**
      * @param string $source
-     * @return void
-     * @throws \Exception
+     * @param string $target
+     * @return float
+     * @throws Exception
      */
-    private function validateCurrencySupport(string $source, array $rate): void
+    private function getRate(string $source, string $target): float
     {
-        if (!array_key_exists($source, $rate)) {
-            throw new \Exception("currency not support");
-        }
-    }
+        $source = strtoupper($source);
+        $target = strtoupper($target);
 
-    /**
-     * @param string $amount
-     * @return void
-     */
-    public function validateAmountSupport(string $amount): void
-    {
-        $pattern = '/^\d{1,3}(,\d{3})*(\.\d{2})?$/';
-
-        if (!is_numeric($amount)){
-            if (!preg_match($pattern, $amount)) {
-                throw new \Exception("amount not support");
-            }
+        if (!array_key_exists($source, $this->rate)) {
+            throw new Exception("currency not support");
         }
+
+        if (!array_key_exists($target, $this->rate[$source])) {
+            throw new Exception("currency not support");
+        }
+
+        return $this->rate[$source][$target];
     }
 }
