@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Services\CurrencyExchangeService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
@@ -9,6 +10,31 @@ use Tests\TestCase;
 
 class CurrencyExchangeTest extends TestCase
 {
+    private array $rate = [
+        "TWD" => [
+            "TWD" => 1,
+            "JPY" => 3.669,
+            "USD" => 0.03281
+        ],
+        "JPY" => [
+            "TWD" => 0.26956,
+            "JPY" => 1,
+            "USD" => 0.00885
+        ],
+        "USD" => [
+            "TWD" => 30.444,
+            "JPY" => 111.801,
+            "USD" => 1
+        ]
+    ];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->app->instance(CurrencyExchangeService::class, new CurrencyExchangeService(rate: $this->rate));
+
+    }
+
     /**
      * @dataProvider currencyExchangeShouldReturnExchangedValueProvider
      */

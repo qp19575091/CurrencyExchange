@@ -8,6 +8,24 @@ use Tests\TestCase;
 
 class CurrencyExchangeServiceTest extends TestCase
 {
+    private array $rate = [
+        "TWD" => [
+            "TWD" => 1,
+            "JPY" => 3.669,
+            "USD" => 0.03281
+        ],
+        "JPY" => [
+            "TWD" => 0.26956,
+            "JPY" => 1,
+            "USD" => 0.00885
+        ],
+        "USD" => [
+            "TWD" => 30.444,
+            "JPY" => 111.801,
+            "USD" => 1
+        ]
+    ];
+
     /**
      * 若輸入的 source 或 target 系統並不提供時的案例
      * php artisan test --filter CurrencyExchangeServiceTest::testInvalidCurrencyTypeShouldThrowException
@@ -17,8 +35,8 @@ class CurrencyExchangeServiceTest extends TestCase
     public function testInvalidCurrencyTypeShouldThrowException($source, $target, $amount)
     {
         $this->expectException(InvalidValueException::class);
-        $currencyExchange = new CurrencyExchangeService(config('currency.rate'));
-        $currencyExchange->convert($source,$target,$amount);
+        $currencyExchange = new CurrencyExchangeService($this->rate);
+        $currencyExchange->convert($source, $target, $amount);
     }
 
     public static function invalidCurrencyTypeShouldThrowExceptionProvider(): array
@@ -38,8 +56,8 @@ class CurrencyExchangeServiceTest extends TestCase
     public function testInvalidAmountShouldThrowException(string $source, string $target, string $amount)
     {
         $this->expectException(InvalidValueException::class);
-        $currencyExchange = new CurrencyExchangeService(config('currency.rate'));
-        $currencyExchange->convert($source,$target,$amount);
+        $currencyExchange = new CurrencyExchangeService($this->rate);
+        $currencyExchange->convert($source, $target, $amount);
     }
 
     public static function invalidAmountShouldThrowExceptionProvider(): array
@@ -59,8 +77,8 @@ class CurrencyExchangeServiceTest extends TestCase
      */
     public function testAmountWithFloatShouldBeConverted(string $source, string $target, string $amount, string $expect)
     {
-        $currencyExchange = new CurrencyExchangeService(config('currency.rate'));
-        $result = $currencyExchange->convert($source,$target,$amount);
+        $currencyExchange = new CurrencyExchangeService($this->rate);
+        $result = $currencyExchange->convert($source, $target, $amount);
         $this->assertEquals($expect, $result);
     }
 
